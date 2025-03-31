@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#BDBDBD</color>
+    <color name="primaryColor">#3F51B5</color> <!-- Adjust based on your theme -->
+    <color name="light_gray">#D3D3D3</color>
+    <color name="blue_gray">#455A64</color>
+    <color name="light_yellow">#FFF59D</color>
+    <color name="purple_500">#6200EE</color>  <!-- FAB Button Color -->
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+</resources>
