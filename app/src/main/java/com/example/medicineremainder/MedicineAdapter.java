@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +12,15 @@ import java.util.List;
 
 public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHolder> {
     private List<Medicine> medicines;
+    private OnMedicineTakenListener listener;
 
-    public MedicineAdapter(List<Medicine> medicines) {
+    public interface OnMedicineTakenListener {
+        void onMedicineTaken(Medicine medicine, int position);
+    }
+
+    public MedicineAdapter(List<Medicine> medicines, OnMedicineTakenListener listener) {
         this.medicines = medicines;
+        this.listener = listener;
     }
 
     @NonNull
@@ -29,6 +36,12 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
         holder.medicineName.setText(medicine.getName());
         holder.medicineDetails.setText(medicine.getDosage() + " - " + medicine.getTime());
         holder.medicineTime.setText("Next Dose: " + medicine.getTime());
+
+        holder.takenButton.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onMedicineTaken(medicine, holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -36,14 +49,21 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
         return medicines.size();
     }
 
+    public void removeItem(int position) {
+        medicines.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView medicineName, medicineDetails, medicineTime;
+        Button takenButton;
 
         ViewHolder(View itemView) {
             super(itemView);
             medicineName = itemView.findViewById(R.id.medicineName);
             medicineDetails = itemView.findViewById(R.id.medicineDetails);
             medicineTime = itemView.findViewById(R.id.medicineTime);
+            takenButton = itemView.findViewById(R.id.btnTaken);
         }
     }
 }

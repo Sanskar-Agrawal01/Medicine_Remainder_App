@@ -38,6 +38,11 @@
             android:name=".AddMedActivity"
             />
 
+
+
+
+
+
         <!-- Notification Receiver -->
         <receiver
             android:name=".NotificationReceiver"
@@ -48,6 +53,14 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".StopAlarmReceiver" />
+
+        <activity
+            android:name=".bmi"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name=".DietPlannerFragment"
+            tools:ignore="Instantiatable" />
 
 
 

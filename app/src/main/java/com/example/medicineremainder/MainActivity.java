@@ -1,40 +1,46 @@
 package com.example.medicineremainder;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private MedicineAdapter adapter;
-    private MedicineDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        db = MedicineDatabase.getInstance(this);
-        List<Medicine> medicines = db.medicineDao().getAllMedicines();
-        adapter = new MedicineAdapter(medicines);
-        recyclerView.setAdapter(adapter);
+        // Load MainFragment initially
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new MainFragment()).commit();
 
-        fab.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AddMedActivity.class)));
-    }
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        List<Medicine> medicines = db.medicineDao().getAllMedicines();
-        adapter = new MedicineAdapter(medicines);
-        recyclerView.setAdapter(adapter);
+            if (item.getItemId() == R.id.nav_home) {
+                selectedFragment = new MainFragment();  // Home
+            } else if (item.getItemId() == R.id.nav_profile) {
+                selectedFragment = new bmi();  // BMI Fragment
+            }
+            else if (item.getItemId() == R.id.nav_diet){
+                selectedFragment = new DietPlannerFragment();
+            }
+            else{
+                selectedFragment = new HistoryFragment();
+            }
+
+
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+            }
+            return true;
+        });
+
     }
 }
